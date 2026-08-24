@@ -1,5 +1,140 @@
 # Changelog
 
+## 2026-07-20
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.2.2`.
+
+## 2026-07-02
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.2.1`.
+
+## 2026-06-23
+### Changed
+`OVERLEAF_INVITE_TOKEN_SECRET` is now required in `config/variables.env`. The secret can be generated
+with `openssl rand -base64 32`.
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.2.0`.
+- Updated nginx image to `nginx:1.30-alpine`.
+- `bin/init` updated to generate `OVERLEAF_INVITE_TOKEN_SECRET`.
+- Bumped `TEX_LIVE_DOCKER_IMAGE` and `ALL_TEX_LIVE_DOCKER_IMAGES` seed images to default to Tex Live 2025.
+
+## 2026-02-19
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.1.2`.
+
+## 2026-02-02
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.1.1`.
+
+## 2026-01-19
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.1.0`.
+
+## 2025-11-17
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.0.1`.
+
+## 2025-10-29
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `6.0.0`.
+
+  :warning: This is a major release. Please check the [release notes](https://docs.overleaf.com/on-premises/release-notes/release-notes-6.x.x) for details.
+
+- Updated mongo default version to `8.0`.
+- Updated redis default version to `7.4`.
+
+## 2025-10-29
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.6`.
+
+## 2025-10-23
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.5`.
+
+## 2025-08-14
+### Changed
+- Upgrade default nginx version for TLS proxy to version 1.28. If you configured a custom `NGINX_IMAGE`, please upgrade it.
+- Fix graceful shutdown procedure with TLS proxy enabled.
+  Swap the dependency between the TLS proxy and Server Pro/CE container. This ensures that `bin/stop` will wait for the application container to stop before taking down the TLS proxy. Notably this ensures that connected users can flush their changes as part of the graceful shutdown procedure.
+  Please align your nginx config with the updated default configuration (add upstream, configure docker as resolver and switch proxy_pass to upstream) by comparing `config/nginx/nginx.conf` and `lib/config-seed/nginx.conf`.
+- Automatically configure `OVERLEAF_SECURE_COOKIE`/`OVERLEAF_BEHIND_PROXY`/`OVERLEAF_TRUSTED_PROXY_IPS` for TLS proxy.
+  In case you are using a subnet from `172.16.0.0/12` (default subnet for Docker networks) for your regular network, please set `OVERLEAF_TRUSTED_PROXY_IPS=loopback,<network>` in your `config/variables.env`. Where `<network>` is the `IPAM -> Config -> Subnet` value in `docker inspect overleaf_default`, e.g. `OVERLEAF_TRUSTED_PROXY_IPS=loopback,172.19.0.0/16`
+
+  Customers with an external TLS proxy (i.e. not managed by the Overleaf Toolkit), please ensure that `OVERLEAF_TRUSTED_PROXY_IPS=loopback,<ip-of-your-tls-proxy>` is set in your `config/variables.env`, e.g. `OVERLEAF_TRUSTED_PROXY_IPS=loopback,192.168.13.37`.
+
+## 2025-08-04
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.4`.
+### Fixed
+- Fix `Permission denied` errors when running `bin/upgrade`.
+
+## 2025-07-29
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.3`.
+
+## 2025-07-09
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.2`.
+
+## 2025-05-28
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.1`.
+-
+## 2025-05-28
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.5.0`.
+
+## 2025-04-30
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.4.1`.
+
+## 2025-04-11
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.4.0`.
+
+## 2025-03-21
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.3.3`.
+
+## 2025-03-11
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.3.2`.
+
+
+## 2025-01-29
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.3.1`.
+
+## 2025-01-06
+### Added
+- Add new config option for skipping docker pull before upgrading
+- Document config options for air-gapped setups
+
+## 2024-11-18
+### Added
+- When a custom `GIT_BRIDGE_IMAGE` is set, `bin/upgrade` no longer tries to pull the new version, and prompts
+  the user to update and tag the custom image separately.
+- Tighten SSL security on nginx proxy
+
+## 2024-10-29
+### Added
+- Pull new images from `bin/upgrade` ahead of stopping containers
+
+## 2024-10-24
+### Added
+- Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `5.2.1`.
+- Drop support for Docker Compose v1. [How to switch to Compose V2](https://docs.docker.com/compose/releases/migrate/#how-do-i-switch-to-compose-v2).
+  Docker Compose v1 has reached its End Of Life in July 2023.
+
+### Changed
+- If set, the `overleaf.rc` entry `GIT_BRIDGE_IMAGE` must be specified without the version now.
+
+  Example:
+  ```diff
+  -GIT_BRIDGE_IMAGE=my.registry.com/overleaf/git-bridge:5.1.1
+  +GIT_BRIDGE_IMAGE=my.registry.com/overleaf/git-bridge
+  ```
+
 ## 2024-09-24
 ### Added
 - Print warning when running `bin/up` without detach mode
@@ -39,9 +174,9 @@
 
 - `SIBLING_CONTAINERS_ENABLED` is now set to `true` for new installs in [`config-seed/overleaf.rc`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/overleaf.rc).
 
-  We strongly recommend enabling the [Sandboxed Compiles feature](https://github.com/overleaf/toolkit/blob/master/doc/sandboxed-compiles.md) 
+  We strongly recommend enabling the [Sandboxed Compiles feature](https://github.com/overleaf/toolkit/blob/master/doc/sandboxed-compiles.md)
   for existing installations as well.
- 
+
 - Added "--appendonly yes" configuration to redis.
 
   Redis persistence documentation: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
@@ -228,12 +363,12 @@
 ## 2023-06-29
 ### Added
 - Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `4.0.3`.
-- 
+-
 
 ## 2023-06-08
 ### Added
 - Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `4.0.2`.
-- 
+-
 ## 2023-05-30
 ### Added
 - Updated default [`version`](https://github.com/overleaf/toolkit/blob/master/lib/config-seed/version) to `4.0.1`.
@@ -325,7 +460,7 @@
 ## 2021-10-13
 ### Added
 - HTTP to HTTPS redirection.
-  - Listen mode of the `sharelatex` container now `localhost` only, so the value of `SHARELATEX_LISTEN_IP` must be set to the public IP address for direct container access. 
+  - Listen mode of the `sharelatex` container now `localhost` only, so the value of `SHARELATEX_LISTEN_IP` must be set to the public IP address for direct container access.
 
 ## 2021-08-12
 ### Added
